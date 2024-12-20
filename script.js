@@ -30,7 +30,9 @@ function createGame(){
 		player2.symbolAssign('O');
 	};
 	function scoreReset(){
-		place = [['','',''],['','',''],['','','']];
+		place = [[null,null,null],[null,null,null],[null,null,null]];
+		lastTurn = null;
+		roundCounter++;
 	};
 	function roundCheck(){
 	}
@@ -38,17 +40,37 @@ function createGame(){
 		roundCounter = 0;
 	};
 	function placeAdd(player,placement){
-		place[placement[0]][placement[1]] = player.getSymbol();
+		if(place[placement[0]][placement[1]] == null){
+			place[placement[0]][placement[1]] = player.getSymbol();
+			placeCheck(player);
+		}
 	};
 	function scoreCheck(){
 		return(place);
 	};
+	function placeCheck(player){	
+		if(place[0].includes(null) || place[1].includes(null) || place[2].includes(null)){
+			if(algorithmCheck() == true){
+				console.log('test');
+			};
+		} else {
+			console.log('tie');
+			scoreReset();
+		}
+	};
+	function algorithmCheck(){
+		return(true);
+	}
 	function scoreWin(){
+	}
+	function getRoundCount(){
+		
 	}
 	return {symbolAssign,
 	roundReset,
 	placeAdd,
-	scoreCheck};
+	scoreCheck,
+	getRoundCount};
 }
 
 // Javascript side test run
@@ -60,5 +82,13 @@ console.log('Player ' + player1.getName() + ' Assigned Symbol: ' + player1.getSy
 console.log('Player ' + player2.getName() + ' Assigned Symbol: ' + player2.getSymbol());
 tictactoe.placeAdd(player1, [0,1]);
 tictactoe.placeAdd(player2, [1,2]);
+tictactoe.placeAdd(player1, [1,1]);
+tictactoe.placeAdd(player2, [2,2]);
+tictactoe.placeAdd(player1, [0,0]);
+tictactoe.placeAdd(player2, [2,0]);
+tictactoe.placeAdd(player1, [2,1]);
+console.log(tictactoe.scoreCheck());
+tictactoe.placeAdd(player2, [0,2]);
+tictactoe.placeAdd(player1, [1,0]);
 console.log(tictactoe.scoreCheck());
 
