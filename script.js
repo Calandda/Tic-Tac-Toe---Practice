@@ -22,8 +22,9 @@ function createUser(name){
 
 function createGame(){
 	let place = [[null,null,null],[null,null,null],[null,null,null]];
+	let gameHistory = [];
 	let lastTurn = null;
-	let roundCounter = 0;
+	let roundCounter = 1;
 	let roundMax = 0;
 	function symbolAssign(player1,player2){
 		player1.symbolAssign('X');
@@ -42,6 +43,7 @@ function createGame(){
 	function placeAdd(player,placement){
 		if(place[placement[0]][placement[1]] == null){
 			place[placement[0]][placement[1]] = player.getSymbol();
+			gameHistory.push([roundCounter, player.getSymbol(),placement]);
 			placeCheck(player);
 		}
 	};
@@ -54,8 +56,12 @@ function createGame(){
 				console.log('test');
 			};
 		} else {
-			console.log('tie');
-			scoreReset();
+			if(algorithmCheck() == true){
+				console.log('test1');
+			} else {
+				console.log('tie');
+				scoreReset();
+			}
 		}
 	};
 	function algorithmCheck(){
@@ -64,13 +70,16 @@ function createGame(){
 	function scoreWin(){
 	}
 	function getRoundCount(){
-		
+	}
+	function getHistory(){
+		return gameHistory;
 	}
 	return {symbolAssign,
 	roundReset,
 	placeAdd,
 	scoreCheck,
-	getRoundCount};
+	getRoundCount,
+	getHistory};
 }
 
 // Javascript side test run
@@ -91,4 +100,5 @@ console.log(tictactoe.scoreCheck());
 tictactoe.placeAdd(player2, [0,2]);
 tictactoe.placeAdd(player1, [1,0]);
 console.log(tictactoe.scoreCheck());
+console.log(tictactoe.getHistory());
 
