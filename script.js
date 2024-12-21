@@ -26,6 +26,7 @@ function createUser(name){
 function createGame(){
 	let place = [[null,null,null],[null,null,null],[null,null,null]];
 	let gameHistory = [];
+	let currentPlayer = null;
 	let lastTurn = null;
 	let roundCounter = 1;
 	let roundMax = 0;
@@ -44,10 +45,14 @@ function createGame(){
 		roundCounter = 0;
 	};
 	function placeAdd(player,placement){
-		if(place[placement[0]][placement[1]] == null){
+		if(place[placement[0]][placement[1]] == null && player.getSymbol() != currentPlayer){
 			place[placement[0]][placement[1]] = player.getSymbol();
 			gameHistory.push([roundCounter, player.getSymbol(),placement]);
+			currentPlayer = player.getSymbol();
+			console.log(currentPlayer);
 			placeCheck(player);
+		} else {
+			console.log('test');
 		}
 	};
 	function scoreCheck(){
@@ -74,7 +79,6 @@ function createGame(){
 		}
 	};
 	function algorithmCheck(){
-		console.log('start');
 		let currentRow = [];
 		let allWin = [];
 		let lastMove = gameHistory.at(-1)[2];
@@ -107,9 +111,7 @@ function createGame(){
 				}
 			}
 		}
-		console.log(currentRow);
 		allWin = currentRow.filter(rowFilter);
-		console.log(allWin);
 		return(allWin.length != 0);
 	}
 	function scoreWin(){
