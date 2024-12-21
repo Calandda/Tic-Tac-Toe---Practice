@@ -17,7 +17,10 @@ function createUser(name){
 	function getName(){
 		return playerName;
 	}
-	return {scoreAdd, symbolAssign, scoreReset, getSymbol, getName};
+	function getScore(){
+		return score;
+	}
+	return {scoreAdd, symbolAssign, scoreReset, getSymbol, getName, getScore};
 }
 
 function createGame(){
@@ -51,16 +54,22 @@ function createGame(){
 		return(place);
 	};
 	function placeCheck(player){	
+		let winCheck = false;
 		if(place[0].includes(null) || place[1].includes(null) || place[2].includes(null)){
 			if(algorithmCheck() == true){
-				console.log('You Win' + gameHistory.at(-1)[1])
+				winCheck = true;
 			};
 		} else {
 			if(algorithmCheck() == true){
-				
+				winCheck = true;
 			} else {
 				
 			}
+			scoreReset();
+		}
+		if(winCheck == true){
+			console.log('You Win' + gameHistory.at(-1)[1])
+			player.scoreAdd();
 			scoreReset();
 		}
 	};
@@ -69,6 +78,7 @@ function createGame(){
 		let currentRow = [];
 		let allWin = [];
 		let lastMove = gameHistory.at(-1)[2];
+		let playerSymbol = gameHistory.at(-1)[1];
 		currentRow.push([]);
 		for(let i = 0 ;i <3;i++){
 			currentRow[0] = currentRow[0] + place[lastMove[0]][i];
@@ -77,7 +87,27 @@ function createGame(){
 		for(let j = 0;j <3;j++){
 			currentRow[1] = currentRow[1] + place[j][lastMove[1]];
 		}
-		//allWin = currentRow[1].reduce(rowReduce);
+		if(place[1][1] == playerSymbol){
+			// diagonal left to right
+			currentRow.push([]);
+			for(let i = 0;i<3;i++){
+				for(let j=0;j<3;j++){
+					if(i==j){
+						currentRow[2] = currentRow[2] + place[i][j];
+					}
+				}
+			}
+			// diagonal right to left
+			currentRow.push([]);
+			for(let i = 0;i<3;i++){
+				for(let j=0;j<3;j++){
+					if(i == 2-j){
+						currentRow[3] = currentRow[3] + place[i][j];
+					}
+				}
+			}
+		}
+		console.log(currentRow);
 		allWin = currentRow.filter(rowFilter);
 		console.log(allWin);
 		return(allWin.length != 0);
@@ -108,11 +138,14 @@ const player2 = createUser('player2');
 tictactoe.symbolAssign(player1,player2);
 console.log('Player ' + player1.getName() + ' Assigned Symbol: ' + player1.getSymbol());
 console.log('Player ' + player2.getName() + ' Assigned Symbol: ' + player2.getSymbol());
+console.log(player1.getScore());
 tictactoe.placeAdd(player1, [0,1]);
 tictactoe.placeAdd(player2, [1,2]);
 tictactoe.placeAdd(player1, [1,1]);
 tictactoe.placeAdd(player2, [2,2]);
 tictactoe.placeAdd(player1, [0,0]);
 tictactoe.placeAdd(player2, [2,0]);
+console.log(tictactoe.scoreCheck());
 tictactoe.placeAdd(player1, [2,1]);
-//console.log(tictactoe.scoreCheck());
+console.log(player1.getScore());
+
