@@ -53,7 +53,7 @@ function createGame(){
 	function placeCheck(player){	
 		if(place[0].includes(null) || place[1].includes(null) || place[2].includes(null)){
 			if(algorithmCheck() == true){
-				
+				console.log('You Win' + gameHistory.at(-1)[1])
 			};
 		} else {
 			if(algorithmCheck() == true){
@@ -65,21 +65,22 @@ function createGame(){
 		}
 	};
 	function algorithmCheck(){
+		console.log('start');
 		let currentRow = [];
 		let allWin = [];
 		let lastMove = gameHistory.at(-1)[2];
-		console.log(lastMove[1]);
 		currentRow.push([]);
 		for(let i = 0 ;i <3;i++){
-			currentRow[0].push(place[lastMove[0]][i]);
+			currentRow[0] = currentRow[0] + place[lastMove[0]][i];
 		}
 		currentRow.push([]);
 		for(let j = 0;j <3;j++){
-			currentRow[1].push(place[j][lastMove[1]]);
+			currentRow[1] = currentRow[1] + place[j][lastMove[1]];
 		}
-		console.log(currentRow);
-		allWin.push(currentRow[1].reduce(rowReduce));
-		return(allWin[0] !== undefined);
+		//allWin = currentRow[1].reduce(rowReduce);
+		allWin = currentRow.filter(rowFilter);
+		console.log(allWin);
+		return(allWin.length != 0);
 	}
 	function scoreWin(){
 	}
@@ -88,15 +89,9 @@ function createGame(){
 	function getHistory(){
 		return gameHistory;
 	}
-	function rowReduce(combo,value,index,array){
-		console.log('current '+value);
-		console.log('current2' + gameHistory.at(-1)[1]);
-		if(value == gameHistory.at(-1)[1]){
-			return combo + value;
-		};
-	};
 	function rowFilter(value,index,array){
-		return 1;
+		let userSymbol = gameHistory.at(-1)[1];
+		return value[0] == userSymbol && value[1] == userSymbol && value[2] == userSymbol;
 	}
 	return {symbolAssign,
 	roundReset,
@@ -120,4 +115,4 @@ tictactoe.placeAdd(player2, [2,2]);
 tictactoe.placeAdd(player1, [0,0]);
 tictactoe.placeAdd(player2, [2,0]);
 tictactoe.placeAdd(player1, [2,1]);
-console.log(tictactoe.scoreCheck());
+//console.log(tictactoe.scoreCheck());
