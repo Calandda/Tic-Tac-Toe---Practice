@@ -23,39 +23,53 @@ function createUser(name){
 	return {scoreAdd, symbolAssign, scoreReset, getSymbol, getName, getScore};
 }
 
-function createGame(){
+function createGame(player1,player2){
 	let place = [[null,null,null],[null,null,null],[null,null,null]];
+	let players = [player1,player2];
 	let gameHistory = [];
 	let currentPlayer = null;
 	let lastTurn = null;
-	let roundCounter = 1;
+	let turnOrder = [];
+	let turnCounter = 0;
+	let roundCounter = 0;
 	let roundMax = 0;
-	function symbolAssign(player1,player2){
-		player1.symbolAssign('X');
-		player2.symbolAssign('O');
-	};
+	let gameFinished = false;
+
 	function scoreReset(){
 		place = [[null,null,null],[null,null,null],[null,null,null]];
 		lastTurn = null;
 		roundCounter++;
+		currentPlayer = null;
+		turnCounter = 0;
 	};
+	function setRoundMax(num){
+		roundMax = num;
+	}
 	function roundCheck(){
 	}
 	function roundReset(){
 		roundCounter = 0;
 	};
-	function placeAdd(player,placement){
-		if(place[placement[0]][placement[1]] == null && player.getSymbol() != currentPlayer){
-			place[placement[0]][placement[1]] = player.getSymbol();
-			gameHistory.push([roundCounter, player.getSymbol(),placement]);
-			currentPlayer = player.getSymbol();
-			console.log(currentPlayer);
-			placeCheck(player);
+	function placeAdd(placement){
+		if(place[placement[0]][placement[1]] == null){
+			turnOrder = turnCounter % 2;
+			turnCounter++;
+			place[placement[0]][placement[1]] = players[turnOrder].getSymbol();
+			gameHistory.push([roundCounter, players[turnOrder].getSymbol(),placement]);
+			placeCheck(players[turnOrder]);
 		} else {
 			console.log('test');
 		}
 	};
 	function scoreCheck(){
+		let placeOutput = '';
+		for(let i = 0; i<3;i++){
+			for(let j=0;j<3;j++){
+				placeOutput = placeOutput + ' | ' + place[i][j];
+			}
+			placeOutput = placeOutput +  '\n';
+		}
+		console.log(placeOutput);
 		return(place);
 	};
 	function placeCheck(player){	
@@ -73,9 +87,11 @@ function createGame(){
 			scoreReset();
 		}
 		if(winCheck == true){
+			console.log('test'  + players[0].getName());
 			console.log('You Win' + gameHistory.at(-1)[1])
 			player.scoreAdd();
 			scoreReset();
+			scoreWin();
 		}
 	};
 	function algorithmCheck(){
@@ -115,39 +131,122 @@ function createGame(){
 		return(allWin.length != 0);
 	}
 	function scoreWin(){
+		if(roundCounter >= roundMax){
+			if(players[0].getScore() > players[1].getScore()){
+				console.log(players[0].getName() + ' WINS THE GAME!'); 
+			} else if(player[0].getScore() < players[1].getScore()){
+				console.log(players[1].getName() + ' WINS THE GAME!');
+			}else {
+				console.log('TIE GAME');
+			}
+		}
 	}
 	function getRoundCount(){
 	}
 	function getHistory(){
 		return gameHistory;
 	}
+	function getTurnCounter(){
+		return turnCounter;
+	}
 	function rowFilter(value,index,array){
 		let userSymbol = gameHistory.at(-1)[1];
 		return value[0] == userSymbol && value[1] == userSymbol && value[2] == userSymbol;
 	}
-	return {symbolAssign,
+	return {
 	roundReset,
 	placeAdd,
 	scoreCheck,
 	getRoundCount,
-	getHistory};
+	getHistory,
+	getTurnCounter,
+	setRoundMax};
 }
 
 // Javascript side test run
-const tictactoe = createGame(); 
+
 const player1 = createUser('player1');
 const player2 = createUser('player2');
-tictactoe.symbolAssign(player1,player2);
-console.log('Player ' + player1.getName() + ' Assigned Symbol: ' + player1.getSymbol());
-console.log('Player ' + player2.getName() + ' Assigned Symbol: ' + player2.getSymbol());
+const tictactoe = createGame(player1,player2); 
+player1.symbolAssign('X');
+player2.symbolAssign('O');
+tictactoe.setRoundMax('5');
+tictactoe.placeAdd([0,1]);
+tictactoe.placeAdd([1,2]);
+tictactoe.placeAdd([1,1]);
+tictactoe.placeAdd([2,2]);
+tictactoe.placeAdd([0,0]);
+tictactoe.placeAdd([2,0]);
+tictactoe.scoreCheck();
+console.log(tictactoe.getTurnCounter());
+tictactoe.placeAdd([2,1]);
+console.log(tictactoe.getHistory());
+console.log(tictactoe.getTurnCounter());
 console.log(player1.getScore());
-tictactoe.placeAdd(player1, [0,1]);
-tictactoe.placeAdd(player2, [1,2]);
-tictactoe.placeAdd(player1, [1,1]);
-tictactoe.placeAdd(player2, [2,2]);
-tictactoe.placeAdd(player1, [0,0]);
-tictactoe.placeAdd(player2, [2,0]);
-console.log(tictactoe.scoreCheck());
-tictactoe.placeAdd(player1, [2,1]);
+console.log(player2.getScore());
+player1.symbolAssign('X');
+player2.symbolAssign('O');
+tictactoe.setRoundMax('5');
+tictactoe.placeAdd([0,1]);
+tictactoe.placeAdd([1,2]);
+tictactoe.placeAdd([1,1]);
+tictactoe.placeAdd([2,2]);
+tictactoe.placeAdd([0,0]);
+tictactoe.placeAdd([2,0]);
+tictactoe.scoreCheck();
+console.log(tictactoe.getTurnCounter());
+tictactoe.placeAdd([2,1]);
+console.log(tictactoe.getHistory());
+console.log(tictactoe.getTurnCounter());
 console.log(player1.getScore());
+console.log(player2.getScore());
+player1.symbolAssign('X');
+player2.symbolAssign('O');
+tictactoe.setRoundMax('5');
+tictactoe.placeAdd([0,1]);
+tictactoe.placeAdd([1,2]);
+tictactoe.placeAdd([1,1]);
+tictactoe.placeAdd([2,2]);
+tictactoe.placeAdd([0,0]);
+tictactoe.placeAdd([2,0]);
+tictactoe.scoreCheck();
+console.log(tictactoe.getTurnCounter());
+tictactoe.placeAdd([2,1]);
+console.log(tictactoe.getHistory());
+console.log(tictactoe.getTurnCounter());
+console.log(player1.getScore());
+console.log(player2.getScore());
+player1.symbolAssign('X');
+player2.symbolAssign('O');
+tictactoe.setRoundMax('5');
+tictactoe.placeAdd([0,1]);
+tictactoe.placeAdd([1,2]);
+tictactoe.placeAdd([1,1]);
+tictactoe.placeAdd([2,2]);
+tictactoe.placeAdd([0,0]);
+tictactoe.placeAdd([2,0]);
+tictactoe.scoreCheck();
+console.log(tictactoe.getTurnCounter());
+tictactoe.placeAdd([2,1]);
+console.log(tictactoe.getHistory());
+console.log(tictactoe.getTurnCounter());
+console.log(player1.getScore());
+console.log(player2.getScore());
+player1.symbolAssign('X');
+player2.symbolAssign('O');
+tictactoe.setRoundMax('5');
+tictactoe.placeAdd([0,1]);
+tictactoe.placeAdd([1,2]);
+tictactoe.placeAdd([1,1]);
+tictactoe.placeAdd([2,2]);
+tictactoe.placeAdd([0,0]);
+tictactoe.placeAdd([2,0]);
+tictactoe.scoreCheck();
+console.log(tictactoe.getTurnCounter());
+tictactoe.placeAdd([2,1]);
+console.log(tictactoe.getHistory());
+console.log(tictactoe.getTurnCounter());
+console.log(player1.getScore());
+console.log(player2.getScore());
+
 
