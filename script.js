@@ -51,14 +51,14 @@ function createGame(player1,player2){
 		roundCounter = 0;
 	};
 	function placeAdd(placement){
+		turnOrder = turnCounter % 2;
 		if(place[placement[0]][placement[1]] == null){
-			turnOrder = turnCounter % 2;
 			turnCounter++;
 			place[placement[0]][placement[1]] = players[turnOrder].getSymbol();
 			gameHistory.push([roundCounter, players[turnOrder].getSymbol(),placement]);
 			placeCheck(players[turnOrder]);
 		} else {
-			console.log('test');
+			console.log('Error, Choose Again' + players[turnOrder].getName());
 		}
 	};
 	function scoreCheck(){
@@ -171,76 +171,13 @@ const tictactoe = createGame(player1,player2);
 player1.symbolAssign('X');
 player2.symbolAssign('O');
 tictactoe.setRoundMax('5');
-tictactoe.placeAdd([0,1]);
-tictactoe.placeAdd([1,2]);
-tictactoe.placeAdd([1,1]);
-tictactoe.placeAdd([2,2]);
-tictactoe.placeAdd([0,0]);
-tictactoe.placeAdd([2,0]);
-tictactoe.scoreCheck();
-console.log(tictactoe.getTurnCounter());
-tictactoe.placeAdd([2,1]);
-console.log(tictactoe.getHistory());
-console.log(tictactoe.getTurnCounter());
-console.log(player1.getScore());
-console.log(player2.getScore());
-player1.symbolAssign('X');
-player2.symbolAssign('O');
-tictactoe.setRoundMax('5');
-tictactoe.placeAdd([0,1]);
-tictactoe.placeAdd([1,2]);
-tictactoe.placeAdd([1,1]);
-tictactoe.placeAdd([2,2]);
-tictactoe.placeAdd([0,0]);
-tictactoe.placeAdd([2,0]);
-tictactoe.scoreCheck();
-console.log(tictactoe.getTurnCounter());
-tictactoe.placeAdd([2,1]);
-console.log(tictactoe.getHistory());
-console.log(tictactoe.getTurnCounter());
-console.log(player1.getScore());
-console.log(player2.getScore());
-player1.symbolAssign('X');
-player2.symbolAssign('O');
-tictactoe.setRoundMax('5');
-tictactoe.placeAdd([0,1]);
-tictactoe.placeAdd([1,2]);
-tictactoe.placeAdd([1,1]);
-tictactoe.placeAdd([2,2]);
-tictactoe.placeAdd([0,0]);
-tictactoe.placeAdd([2,0]);
-tictactoe.scoreCheck();
-console.log(tictactoe.getTurnCounter());
-tictactoe.placeAdd([2,1]);
-console.log(tictactoe.getHistory());
-console.log(tictactoe.getTurnCounter());
-console.log(player1.getScore());
-console.log(player2.getScore());
-player1.symbolAssign('X');
-player2.symbolAssign('O');
-tictactoe.setRoundMax('5');
-tictactoe.placeAdd([0,1]);
-tictactoe.placeAdd([1,2]);
-tictactoe.placeAdd([1,1]);
-tictactoe.placeAdd([2,2]);
-tictactoe.placeAdd([0,0]);
-tictactoe.placeAdd([2,0]);
-tictactoe.scoreCheck();
-console.log(tictactoe.getTurnCounter());
-tictactoe.placeAdd([2,1]);
-console.log(tictactoe.getHistory());
-console.log(tictactoe.getTurnCounter());
-console.log(player1.getScore());
-console.log(player2.getScore());
-player1.symbolAssign('X');
-player2.symbolAssign('O');
-tictactoe.setRoundMax('5');
-tictactoe.placeAdd([0,1]);
-tictactoe.placeAdd([1,2]);
-tictactoe.placeAdd([1,1]);
-tictactoe.placeAdd([2,2]);
-tictactoe.placeAdd([0,0]);
-tictactoe.placeAdd([2,0]);
+tictactoe.placeAdd([0,1]); // X
+tictactoe.placeAdd([1,2]); // O
+tictactoe.placeAdd([1,1]); // X
+tictactoe.placeAdd([2,2]); // O
+tictactoe.placeAdd([2,2]); // DUPLICATE
+tictactoe.placeAdd([0,0]); // X
+tictactoe.placeAdd([2,0]); // O
 tictactoe.scoreCheck();
 console.log(tictactoe.getTurnCounter());
 tictactoe.placeAdd([2,1]);
