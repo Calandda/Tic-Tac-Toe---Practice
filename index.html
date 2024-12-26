@@ -6,6 +6,19 @@
 		<link rel = 'stylesheet' href = 'style.css'>
 	</head>
 	<body>
+		<div class = 'divInitialize'>
+			<form>
+				<label for = 'roundCount'>Input Rounds:</label>
+				<input type = 'number' id = 'roundCount' name = 'roundCount' min= '1' max = '20' onKeyDown='return false'>
+				<label for='player1Name'>Player 1</label>
+				<input type = 'text' id = 'player1Name' name = 'player1Name'>
+				<label for = 'player2Name'>Player 2</label>
+				<input type = 'text' id = 'player2Name' name = 'player2Name'>
+				<input type = 'button' id = 'submit' name = 'submit' value = 'SUBMIT'>
+			</form>
+		</div>
+		<div class = 'divGame'>
+		</div>
 		<script src = 'script.js'></script>
 	</body>
 </html>
