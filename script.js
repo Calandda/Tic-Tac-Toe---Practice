@@ -2,7 +2,7 @@ function createUser(name){
 	let score = 0;
 	let symbol = '';
 	let playerName = name;
-	function symbolAssign(inputSymbol){
+	function setSymbol(inputSymbol){
 		symbol = inputSymbol;
 	};
 	function scoreAdd(){
@@ -20,12 +20,12 @@ function createUser(name){
 	function getScore(){
 		return score;
 	}
-	return {scoreAdd, symbolAssign, scoreReset, getSymbol, getName, getScore};
+	return {scoreAdd, setSymbol, scoreReset, getSymbol, getName, getScore};
 }
 
 function createGame(player1,player2){
 	let place = [[null,null,null],[null,null,null],[null,null,null]];
-	let players = [player1,player2];
+	let players = playerRandomize(player1,player2);
 	let gameHistory = [];
 	let currentPlayer = null;
 	let lastTurn = null;
@@ -157,6 +157,13 @@ function createGame(player1,player2){
 	function getTurn(){
 		return players[turnCounter+1 % 2];
 	}
+	function playerRandomize(player1,player2){
+		if(Math.random() > 0.5){
+			return [player1,player2];
+		} else {
+			return [player2,player1];
+		}
+	}
 	return {
 	roundReset,
 	placeAdd,
@@ -168,27 +175,40 @@ function createGame(player1,player2){
 	getTurn};
 }
 
-function createDisplay(){
+function createDisplay(inputData){
 	const divInput = document.querySelector('.divInitialize');
+	const divGame = document.querySelector('.divGame');
+	const player1 = createUser(inputData.get('player1Name'));
+	const player2 = createUser(inputData.get('player1Name'));
+	player1.setSymbol(inputData.get('player1Symbol'));
+	player2.setSymbol(inputData.get('player2Symbol'));
 
 	function displayRefresh(gameHistory){
 	};
 	function openGameBoard(){
+		divGame.style.display = 'block';
 	};
 	function closeGameBoard(){
+		divGame.style.display = 'none';
 	};
 	function openInputBoard(){
+		divInput.style.display = 'block';
 	};
 	function closeInputBoard(){
 		divInput.style.display = 'none';
 	};
+	function checkPlayerConsole(){
+		console.log('Player 1 Name= '+player1.getName()+' Player 1 Symbol= '+player1.getSymbol());
+		console.log('Player 2 Name= '+player2.getName()+' Player 2 Symbol= '+player2.getSymbol());
+	}
 	
 	return {
 	displayRefresh,
 	openGameBoard,
 	closeGameBoard,
 	openInputBoard,
-	closeInputBoard};
+	closeInputBoard,
+	checkPlayerConsole};
 }
 
 
@@ -197,20 +217,21 @@ let displayGame;
 formInput.addEventListener('submit', (event) =>{
 	event.preventDefault();
 	const inputData = new FormData(formInput);
-	displayGame = createDisplay();
+	console.log(inputData.get('player1Name'))
+	displayGame = createDisplay(inputData);
 	displayGame.closeInputBoard();
-	
+	displayGame.openGameBoard();
+	displayGame.checkPlayerConsole();
 });
 
 
-// Javascript side test run
 const player1 = createUser('player1');
 const player2 = createUser('player2');
 const tictactoe = createGame(player1,player2); 
-player1.symbolAssign('X');
-player2.symbolAssign('O');
+player1.setSymbol('X');
+player2.setSymbol('O');
 tictactoe.setRoundMax('5');
-
+tictactoe.placeAdd([1,1]);
 
 
 
