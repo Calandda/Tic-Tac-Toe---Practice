@@ -58,8 +58,9 @@ function createGame(player1,player2){
 			gameHistory.push([roundCounter, players[turnOrder].getSymbol(),placement]);
 			placeCheck(players[turnOrder]);
 			scoreCheck();
+			return(true);
 		} else {
-			console.log('Error, Choose Again' + players[turnOrder].getName());
+			return(false);
 		}
 	};
 	function scoreCheck(){
@@ -177,6 +178,8 @@ function createGame(player1,player2){
 }
 
 function createDisplay(inputData){
+	const imageAdd = './images/';
+	const imageSymbol = ['circle.svg','cross.svg'];
 	const divInput = document.querySelector('.divInitialize');
 	createDisplay();
 	const divGame = document.querySelector('.divGame');
@@ -189,7 +192,9 @@ function createDisplay(inputData){
 	divGame.addEventListener('click', (event)=>{
 		const placement = [event.target.getAttribute('data-value'),event.target.getAttribute('data-value2')];
 		console.log(placement);
-		tictactoe.placeAdd(placement);
+		if(tictactoe.placeAdd(placement) === true){
+			setSymbolDisplay(event);
+		};
 	});
 	function createDisplay(){
 		const body = document.querySelector('body');
@@ -219,7 +224,15 @@ function createDisplay(inputData){
 		tictactoe.placeAdd(num);
 		tictactoe.getHistory();
 	};
-	function setSymbolDisplay(){
+	function setSymbolDisplay(e){
+		const lastSymbol = tictactoe.getHistory().at(-1)[1];
+		let index = null;
+		if(lastSymbol === 'X'){
+			index = 1;
+		} else if(lastSymbol === 'O'){
+			index = 0;
+		};
+		event.target.style.backgroundImage = 'url('+ imageAdd + imageSymbol[index] + ')';
 	};
 	return {
 	displayRefresh,
