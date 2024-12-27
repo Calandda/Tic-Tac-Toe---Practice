@@ -164,6 +164,7 @@ function createGame(player1,player2){
 			return [player2,player1];
 		}
 	}
+
 	return {
 	roundReset,
 	placeAdd,
@@ -177,6 +178,7 @@ function createGame(player1,player2){
 
 function createDisplay(inputData){
 	const divInput = document.querySelector('.divInitialize');
+	createDisplay();
 	const divGame = document.querySelector('.divGame');
 	const player1 = createUser(inputData.get('player1Name'));
 	const player2 = createUser(inputData.get('player1Name'));
@@ -189,6 +191,12 @@ function createDisplay(inputData){
 		console.log(placement);
 		tictactoe.placeAdd(placement);
 	});
+	function createDisplay(){
+		const body = document.querySelector('body');
+		const template = document.querySelector('#displayGame');
+		const gameDisplay = template.content.cloneNode(true);
+		body.appendChild(gameDisplay);
+	}
 	function displayRefresh(gameHistory){
 	};
 	function openGameBoard(){
