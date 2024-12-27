@@ -168,21 +168,39 @@ function createGame(player1,player2){
 	getTurn};
 }
 
-function displayGame(){
+function createDisplay(){
+	const divInput = document.querySelector('.divInitialize');
+
+	function displayRefresh(gameHistory){
+	};
+	function openGameBoard(){
+	};
+	function closeGameBoard(){
+	};
+	function openInputBoard(){
+	};
+	function closeInputBoard(){
+		divInput.style.display = 'none';
+	};
+	
+	return {
+	displayRefresh,
+	openGameBoard,
+	closeGameBoard,
+	openInputBoard,
+	closeInputBoard};
 }
 
 
-document.addEventListener('click', (event) =>{
-	const documentElement = event.target;
-	let test;
-	console.log(test);
-	if(event.target.name == 'submit'){
-		test = 'yes';
-	} else {
-		
-	}
+const formInput = document.querySelector('form');
+let displayGame;
+formInput.addEventListener('submit', (event) =>{
+	event.preventDefault();
+	const inputData = new FormData(formInput);
+	displayGame = createDisplay();
+	displayGame.closeInputBoard();
+	
 });
-
 
 
 // Javascript side test run
