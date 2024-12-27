@@ -180,8 +180,10 @@ function createDisplay(inputData){
 	const divGame = document.querySelector('.divGame');
 	const player1 = createUser(inputData.get('player1Name'));
 	const player2 = createUser(inputData.get('player1Name'));
-	player1.setSymbol(inputData.get('player1Symbol'));
-	player2.setSymbol(inputData.get('player2Symbol'));
+	player1.setSymbol('X');
+	player2.setSymbol('O');
+	const tictactoe = createGame(player1,player2);
+	tictactoe.setRoundMax(inputData.get('roundCount'));
 
 	function displayRefresh(gameHistory){
 	};
@@ -201,6 +203,10 @@ function createDisplay(inputData){
 		console.log('Player 1 Name= '+player1.getName()+' Player 1 Symbol= '+player1.getSymbol());
 		console.log('Player 2 Name= '+player2.getName()+' Player 2 Symbol= '+player2.getSymbol());
 	}
+	function playConsole(num){
+		tictactoe.placeAdd(num);
+		tictactoe.getHistory();
+	}
 	
 	return {
 	displayRefresh,
@@ -208,7 +214,8 @@ function createDisplay(inputData){
 	closeGameBoard,
 	openInputBoard,
 	closeInputBoard,
-	checkPlayerConsole};
+	checkPlayerConsole,
+	playConsole};
 }
 
 
@@ -221,10 +228,9 @@ formInput.addEventListener('submit', (event) =>{
 	displayGame = createDisplay(inputData);
 	displayGame.closeInputBoard();
 	displayGame.openGameBoard();
-	displayGame.checkPlayerConsole();
 });
 
-
+/**
 const player1 = createUser('player1');
 const player2 = createUser('player2');
 const tictactoe = createGame(player1,player2); 
@@ -233,5 +239,5 @@ player2.setSymbol('O');
 tictactoe.setRoundMax('5');
 tictactoe.placeAdd([1,1]);
 
-
+**/
 
