@@ -184,11 +184,15 @@ function createDisplay(inputData){
 	player2.setSymbol('O');
 	const tictactoe = createGame(player1,player2);
 	tictactoe.setRoundMax(inputData.get('roundCount'));
-
+	divGame.addEventListener('click', (event)=>{
+		const placement = [event.target.getAttribute('data-value'),event.target.getAttribute('data-value2')];
+		console.log(placement);
+		tictactoe.placeAdd(placement);
+	});
 	function displayRefresh(gameHistory){
 	};
 	function openGameBoard(){
-		divGame.style.display = 'block';
+		divGame.style.display = 'flex';
 	};
 	function closeGameBoard(){
 		divGame.style.display = 'none';
@@ -202,12 +206,13 @@ function createDisplay(inputData){
 	function checkPlayerConsole(){
 		console.log('Player 1 Name= '+player1.getName()+' Player 1 Symbol= '+player1.getSymbol());
 		console.log('Player 2 Name= '+player2.getName()+' Player 2 Symbol= '+player2.getSymbol());
-	}
+	};
 	function playConsole(num){
 		tictactoe.placeAdd(num);
 		tictactoe.getHistory();
-	}
-	
+	};
+	function setSymbolDisplay(){
+	};
 	return {
 	displayRefresh,
 	openGameBoard,

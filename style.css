@@ -4,4 +4,17 @@
 
 .divGame{
 	display: none;
+	align-content: center;
+	justify-content: center;
+}
+.sectionDisplay{
+	display: flex;
+	flex-wrap: wrap;
+	width: 800px;
+}
+.sectionDisplay > div{
+	height: 200px;
+	width: 30px;
+	border: 1px solid black;
+	flex-basis: 33%;
 }
