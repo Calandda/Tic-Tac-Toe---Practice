@@ -83,7 +83,10 @@ function createGame(player1,player2){
 		} else {
 			if(algorithmCheck() == true){
 				winCheck = true;
-			} 
+			} else {
+				console.log('Tie');
+				scoreReset();
+			}
 		}
 		if(winCheck == true){
 			console.log('You Win' + gameHistory.at(-1)[1]);
@@ -191,6 +194,7 @@ function createDisplay(inputData){
 		console.log(placement);
 		if(tictactoe.placeAdd(placement) === true){
 			setSymbolDisplay(event);
+			setScoreDisplay();
 		};
 	});
 	function createDisplay(){
@@ -236,7 +240,10 @@ function createDisplay(inputData){
 		event.target.style.backgroundImage = 'url('+ imageAdd + imageSymbol[index] + ')';
 	};
 	function setScoreDisplay(){
-		//const divPlayer1Score =
+		const pPlayer1Score = document.querySelector('.pPlayer1Score');
+		const pPlayer2Score = document.querySelector('.pPlayer2Score');
+		pPlayer1Score.textContent = player1.getScore();
+		pPlayer2Score.textContent = player2.getScore();
 	}
 	return {
 	displayRefresh,
@@ -245,8 +252,7 @@ function createDisplay(inputData){
 	openInputBoard,
 	closeInputBoard,
 	checkPlayerConsole,
-	playConsole,
-	setScoreDisplay};
+	playConsole};
 }
 
 
