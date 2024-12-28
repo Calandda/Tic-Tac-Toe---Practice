@@ -34,6 +34,8 @@ function createGame(player1,player2){
 	let roundCounter = 0;
 	let roundMax = 0;
 	let gameFinished = false;
+	let winningLine = [];
+	let winningLineHistory = [];
 
 	function scoreReset(){
 		place = [[null,null,null],[null,null,null],[null,null,null]];
@@ -41,6 +43,7 @@ function createGame(player1,player2){
 		roundCounter++;
 		currentPlayer = null;
 		turnCounter = 0;
+		winningLineHistory.push(winningLine);
 	};
 	function setRoundMax(num){
 		roundMax = num;
@@ -76,13 +79,13 @@ function createGame(player1,player2){
 	};
 	function placeCheck(){	
 		let winCheck = false;
-		winArray = algorithmCheck();
+		winningLine = algorithmCheck();
 		if(place[0].includes(null) || place[1].includes(null) || place[2].includes(null)){
-			if(winArray.length != 0){
+			if(winningLine.length != 0){
 				winCheck = true;
 			};
 		} else {
-			if(winArray.length != true){
+			if(winningLine.length != 0){
 				winCheck = true;
 			} else {
 				console.log('Tie');
@@ -175,6 +178,10 @@ function createGame(player1,player2){
 			return [player2,player1];
 		}
 	}
+	function getWinningLine(){
+		console.log(winningLine);
+		return winningLine;
+	}
 
 	return {
 	roundReset,
@@ -185,7 +192,8 @@ function createGame(player1,player2){
 	getTurnCounter,
 	setRoundMax,
 	getTurn,
-	placeCheck};
+	placeCheck,
+	getWinningLine};
 }
 
 function createDisplay(inputData){
@@ -213,6 +221,7 @@ function createDisplay(inputData){
 			setScoreDisplay();
 			console.log('winCheck');
 			winStallCheck = true;
+			setWinningLine(tictactoe.getWinningLine());
 		} else if(winStallCheck == true){
 			winStallCheck = false;
 			console.log('winCheckStall');
@@ -266,6 +275,7 @@ function createDisplay(inputData){
 		const sectionDisplay = document.querySelectorAll('.square');
 		for(let i = 0; i < 9; i++){
 			sectionDisplay[i].style.backgroundImage = 'none';
+			sectionDisplay[i].style.filter = '';
 		};
 	}
 	function setScoreDisplay(){
@@ -274,6 +284,17 @@ function createDisplay(inputData){
 		pPlayer1Score.textContent = player1.getScore();
 		pPlayer2Score.textContent = player2.getScore();
 	}
+	function setWinningLine(line){
+		const sectionDisplay = document.querySelectorAll('.square');
+		console.log(line);
+		for(let i = 0; i<3;i++){
+			for(let j = 0; j<9;j++){
+				if(sectionDisplay[j].getAttribute('data-value') == line[0][i][0] && sectionDisplay[j].getAttribute('data-value2') == line[0][i][1]){
+					sectionDisplay[j].style.filter = 'invert(50%)';
+				}
+			}
+		}
+	};
 	return {
 	displayRefresh,
 	openGameBoard,
