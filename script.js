@@ -56,7 +56,7 @@ function createGame(player1,player2){
 			turnCounter++;
 			place[placement[0]][placement[1]] = players[turnOrder].getSymbol();
 			gameHistory.push([roundCounter, players[turnOrder].getSymbol(),placement]);
-			placeCheck(players[turnOrder]);
+			placeCheck();
 			scoreCheck();
 			return(true);
 		} else {
@@ -74,7 +74,7 @@ function createGame(player1,player2){
 		console.log(placeOutput);
 		return(place);
 	};
-	function placeCheck(player){	
+	function placeCheck(){	
 		let winCheck = false;
 		if(place[0].includes(null) || place[1].includes(null) || place[2].includes(null)){
 			if(algorithmCheck() == true){
@@ -83,15 +83,12 @@ function createGame(player1,player2){
 		} else {
 			if(algorithmCheck() == true){
 				winCheck = true;
-			} else {
-				
-			}
-			scoreReset();
+			} 
 		}
 		if(winCheck == true){
-			console.log('test'  + players[0].getName());
-			console.log('You Win' + gameHistory.at(-1)[1])
-			player.scoreAdd();
+			console.log('You Win' + gameHistory.at(-1)[1]);
+			console.log(players[turnOrder].getSymbol());
+			players[turnOrder].scoreAdd();
 			scoreReset();
 			scoreWin();
 		}
@@ -181,12 +178,12 @@ function createDisplay(inputData){
 	const imageAdd = './images/';
 	const imageSymbol = ['circle.svg','cross.svg'];
 	const divInput = document.querySelector('.divInitialize');
-	createDisplay();
-	const divGame = document.querySelector('.divGame');
 	const player1 = createUser(inputData.get('player1Name'));
-	const player2 = createUser(inputData.get('player1Name'));
+	const player2 = createUser(inputData.get('player2Name'));
 	player1.setSymbol('X');
 	player2.setSymbol('O');
+	createDisplay();
+	const divGame = document.querySelector('.divGame');
 	const tictactoe = createGame(player1,player2);
 	tictactoe.setRoundMax(inputData.get('roundCount'));
 	divGame.addEventListener('click', (event)=>{
@@ -201,6 +198,10 @@ function createDisplay(inputData){
 		const template = document.querySelector('#displayGame');
 		const gameDisplay = template.content.cloneNode(true);
 		body.appendChild(gameDisplay);
+		const pPlayer1Name = document.querySelector('.pPlayer1Name');
+		const pPlayer2Name = document.querySelector('.pPlayer2Name');
+		pPlayer1Name.textContent = player1.getName();
+		pPlayer2Name.textContent = player2.getName();
 	}
 	function displayRefresh(gameHistory){
 	};
@@ -234,6 +235,9 @@ function createDisplay(inputData){
 		};
 		event.target.style.backgroundImage = 'url('+ imageAdd + imageSymbol[index] + ')';
 	};
+	function setScoreDisplay(){
+		//const divPlayer1Score =
+	}
 	return {
 	displayRefresh,
 	openGameBoard,
@@ -241,7 +245,8 @@ function createDisplay(inputData){
 	openInputBoard,
 	closeInputBoard,
 	checkPlayerConsole,
-	playConsole};
+	playConsole,
+	setScoreDisplay};
 }
 
 
