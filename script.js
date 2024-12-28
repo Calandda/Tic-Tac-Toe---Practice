@@ -76,12 +76,13 @@ function createGame(player1,player2){
 	};
 	function placeCheck(){	
 		let winCheck = false;
+		winArray = algorithmCheck();
 		if(place[0].includes(null) || place[1].includes(null) || place[2].includes(null)){
-			if(algorithmCheck() == true){
+			if(winArray.length != 0){
 				winCheck = true;
 			};
 		} else {
-			if(algorithmCheck() == true){
+			if(winArray.length != true){
 				winCheck = true;
 			} else {
 				console.log('Tie');
@@ -105,11 +106,15 @@ function createGame(player1,player2){
 		let playerSymbol = gameHistory.at(-1)[1];
 		currentRow.push([]);
 		for(let i = 0 ;i <3;i++){
-			currentRow[0] = currentRow[0] + place[lastMove[0]][i];
+			//currentRow[0] = currentRow[0] + place[lastMove[0]][i];	
+			currentRow[0].push([parseInt(lastMove[0]),i]);
 		}
+		console.log('test' + currentRow[0])
+		//currentRow[0][1] = [[lastMove[0],0],[lastMove[0],1],[lastMove[0],2]];
 		currentRow.push([]);
 		for(let j = 0;j <3;j++){
-			currentRow[1] = currentRow[1] + place[j][lastMove[1]];
+			//currentRow[1] = currentRow[1] + place[j][lastMove[1]];
+			currentRow[1].push([j,parseInt(lastMove[1])]);
 		}
 		if(place[1][1] == playerSymbol){
 			// diagonal left to right
@@ -117,7 +122,7 @@ function createGame(player1,player2){
 			for(let i = 0;i<3;i++){
 				for(let j=0;j<3;j++){
 					if(i==j){
-						currentRow[2] = currentRow[2] + place[i][j];
+						currentRow[2].push([i,j]);
 					}
 				}
 			}
@@ -126,13 +131,15 @@ function createGame(player1,player2){
 			for(let i = 0;i<3;i++){
 				for(let j=0;j<3;j++){
 					if(i == 2-j){
-						currentRow[3] = currentRow[3] + place[i][j];
+						currentRow[3].push([i,j]);
 					}
 				}
 			}
 		}
 		allWin = currentRow.filter(rowFilter);
-		return(allWin.length != 0);
+		console.log('TEST History');
+		console.log(allWin);
+		return(allWin);
 	}
 	function scoreWin(){
 		if(roundCounter >= roundMax){
@@ -155,7 +162,8 @@ function createGame(player1,player2){
 	}
 	function rowFilter(value,index,array){
 		let userSymbol = gameHistory.at(-1)[1];
-		return value[0] == userSymbol && value[1] == userSymbol && value[2] == userSymbol;
+	
+		return place[value[0][0]][value[0][1]] == userSymbol && place[value[1][0]][value[1][1]] == userSymbol && place[value[2][0]][value[2][1]] == userSymbol;
 	}
 	function getTurn(){
 		return players[turnCounter+1 % 2];
