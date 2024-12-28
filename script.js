@@ -56,7 +56,7 @@ function createGame(player1,player2){
 			turnCounter++;
 			place[placement[0]][placement[1]] = players[turnOrder].getSymbol();
 			gameHistory.push([roundCounter, players[turnOrder].getSymbol(),placement]);
-			placeCheck();
+			//placeCheck();
 			scoreCheck();
 			return(true);
 		} else {
@@ -86,6 +86,7 @@ function createGame(player1,player2){
 			} else {
 				console.log('Tie');
 				scoreReset();
+				return(true);
 			}
 		}
 		if(winCheck == true){
@@ -94,6 +95,7 @@ function createGame(player1,player2){
 			players[turnOrder].scoreAdd();
 			scoreReset();
 			scoreWin();
+			return(true);
 		}
 	};
 	function algorithmCheck(){
@@ -174,7 +176,8 @@ function createGame(player1,player2){
 	getHistory,
 	getTurnCounter,
 	setRoundMax,
-	getTurn};
+	getTurn,
+	placeCheck};
 }
 
 function createDisplay(inputData){
@@ -183,6 +186,7 @@ function createDisplay(inputData){
 	const divInput = document.querySelector('.divInitialize');
 	const player1 = createUser(inputData.get('player1Name'));
 	const player2 = createUser(inputData.get('player2Name'));
+	let winStallCheck = false;
 	player1.setSymbol('X');
 	player2.setSymbol('O');
 	createDisplay();
@@ -192,10 +196,20 @@ function createDisplay(inputData){
 	divGame.addEventListener('click', (event)=>{
 		const placement = [event.target.getAttribute('data-value'),event.target.getAttribute('data-value2')];
 		console.log(placement);
-		if(tictactoe.placeAdd(placement) === true){
-			setSymbolDisplay(event);
-			setScoreDisplay();
+		if(winStallCheck == false){
+			if(tictactoe.placeAdd(placement) == true){
+				setSymbolDisplay(event);
+			}
 		};
+		if(tictactoe.placeCheck() == true){
+			setScoreDisplay();
+			console.log('winCheck');
+			winStallCheck = true;
+		} else if(winStallCheck == true){
+			winStallCheck = false;
+			console.log('winCheckStall');
+			resetSymbolDisplay();
+		}
 	});
 	function createDisplay(){
 		const body = document.querySelector('body');
@@ -239,6 +253,13 @@ function createDisplay(inputData){
 		};
 		event.target.style.backgroundImage = 'url('+ imageAdd + imageSymbol[index] + ')';
 	};
+	function resetSymbolDisplay(){
+		console.log('reset');
+		const sectionDisplay = document.querySelectorAll('.square');
+		for(let i = 0; i < 9; i++){
+			sectionDisplay[i].style.backgroundImage = 'none';
+		};
+	}
 	function setScoreDisplay(){
 		const pPlayer1Score = document.querySelector('.pPlayer1Score');
 		const pPlayer2Score = document.querySelector('.pPlayer2Score');
