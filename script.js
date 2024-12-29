@@ -207,6 +207,7 @@ function createDisplay(inputData){
 	const player1 = createUser(inputData.get('player1Name'));
 	const player2 = createUser(inputData.get('player2Name'));
 	let matchEnd = false;
+	let matchWinCheck;
 	let winStallCheck = false;
 	player1.setSymbol('X');
 	player2.setSymbol('O');
@@ -228,7 +229,7 @@ function createDisplay(inputData){
 				console.log('winCheck');
 				winStallCheck = true;
 				setWinningLine(tictactoe.getWinningLine());
-				const matchWinCheck = tictactoe.scoreWin();
+				matchWinCheck = tictactoe.scoreWin();
 				if(matchWinCheck != false){
 					matchEnd = true;
 					setMatchWinInfo();
@@ -319,6 +320,8 @@ function createDisplay(inputData){
 		}
 	};
 	function setMatchWinInfo(){
+		const lastWin = document.querySelector('.divLastWin');
+		lastWin.textContent = matchWinCheck;
 	};
 	return {
 	displayRefresh,

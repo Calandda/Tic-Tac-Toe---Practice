@@ -2,6 +2,14 @@
 
 	Tic Tac Toe made with HTML/Javascript/CSS; Objects and Closure practice
 	
+	Functioning Tic Tac Toe game with minimal visual design
+
+# Upcoming
+
+	- optimizing code
+	- Turn order display
+	- better visual design
+	
 ## Credits
 
 	Close SVG - Google Fonts Icon
