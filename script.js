@@ -44,6 +44,7 @@ function createGame(player1,player2){
 		currentPlayer = null;
 		turnCounter = 0;
 		winningLineHistory.push(winningLine);
+		players = playerRandomize(players[0],players[1]);
 	};
 	function setRoundMax(num){
 		roundMax = num;
