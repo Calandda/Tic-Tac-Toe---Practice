@@ -7,14 +7,19 @@
 	align-content: center;
 	justify-content: center;
 }
+.divInfo{
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
 .sectionDisplay{
 	display: flex;
 	flex-wrap: wrap;
-	width: 800px;
+	width: 600px;
 }
 .sectionDisplay > div{
-	height: 240px;
-	width: 240px;
+	height: 200px;
+	width: 200px;
 	border: 1px solid black;
 	flex-basis: 33%;
 	background-repeat: no-repeat;

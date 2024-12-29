@@ -98,7 +98,7 @@ function createGame(player1,player2){
 			console.log(players[turnOrder].getSymbol());
 			players[turnOrder].scoreAdd();
 			scoreReset();
-			scoreWin();
+			//scoreWin();
 			return(true);
 		}
 	};
@@ -147,12 +147,14 @@ function createGame(player1,player2){
 	function scoreWin(){
 		if(roundCounter >= roundMax){
 			if(players[0].getScore() > players[1].getScore()){
-				console.log(players[0].getName() + ' WINS THE GAME!'); 
-			} else if(player[0].getScore() < players[1].getScore()){
-				console.log(players[1].getName() + ' WINS THE GAME!');
+				return(players[0].getName());
+			} else if(players[0].getScore() < players[1].getScore()){
+				return(players[1].getName());
 			}else {
-				console.log('TIE GAME');
+				return('tie');
 			}
+		} else {
+			return(false);
 		}
 	}
 	function getRoundCount(){
@@ -193,7 +195,8 @@ function createGame(player1,player2){
 	setRoundMax,
 	getTurn,
 	placeCheck,
-	getWinningLine};
+	getWinningLine,
+	scoreWin};
 }
 
 function createDisplay(inputData){
@@ -202,6 +205,7 @@ function createDisplay(inputData){
 	const divInput = document.querySelector('.divInitialize');
 	const player1 = createUser(inputData.get('player1Name'));
 	const player2 = createUser(inputData.get('player2Name'));
+	let matchEnd = false;
 	let winStallCheck = false;
 	player1.setSymbol('X');
 	player2.setSymbol('O');
@@ -212,20 +216,33 @@ function createDisplay(inputData){
 	divGame.addEventListener('click', (event)=>{
 		const placement = [event.target.getAttribute('data-value'),event.target.getAttribute('data-value2')];
 		console.log(placement);
-		if(winStallCheck == false){
-			if(tictactoe.placeAdd(placement) == true){
-				setSymbolDisplay(event);
+		if(matchEnd == false){
+			if(winStallCheck == false){
+				if(tictactoe.placeAdd(placement) == true){
+					setSymbolDisplay(event);
+				}
+			};
+			if(tictactoe.placeCheck() == true){
+				setScoreDisplay();
+				console.log('winCheck');
+				winStallCheck = true;
+				setWinningLine(tictactoe.getWinningLine());
+				const matchWinCheck = tictactoe.scoreWin();
+				if(matchWinCheck != false){
+					matchEnd = true;
+					setMatchWinInfo();
+				}
+			} else if(winStallCheck == true){
+				winStallCheck = false;
+				console.log('winCheckStall');
+				resetSymbolDisplay();
 			}
-		};
-		if(tictactoe.placeCheck() == true){
-			setScoreDisplay();
-			console.log('winCheck');
-			winStallCheck = true;
-			setWinningLine(tictactoe.getWinningLine());
-		} else if(winStallCheck == true){
-			winStallCheck = false;
-			console.log('winCheckStall');
-			resetSymbolDisplay();
+		} else if(matchEnd == true){
+			const gameDisplay = document.querySelector('.divGame');
+			const infoDisplay = document.querySelector('.divInfo');
+			infoDisplay.remove();
+			gameDisplay.remove();
+			openInputBoard();
 		}
 	});
 	function createDisplay(){
@@ -235,8 +252,13 @@ function createDisplay(inputData){
 		body.appendChild(gameDisplay);
 		const pPlayer1Name = document.querySelector('.pPlayer1Name');
 		const pPlayer2Name = document.querySelector('.pPlayer2Name');
+		const pPlayer1Score = document.querySelector('.pPlayer1Score');
+		const pPlayer2Score = document.querySelector('.pPlayer2Score');
 		pPlayer1Name.textContent = player1.getName();
 		pPlayer2Name.textContent = player2.getName();
+		pPlayer1Score.textContent = 0;
+		pPlayer2Score.textContent = 0;
+		resetSymbolDisplay();
 	}
 	function displayRefresh(gameHistory){
 	};
@@ -295,6 +317,8 @@ function createDisplay(inputData){
 			}
 		}
 	};
+	function setMatchWinInfo(){
+	};
 	return {
 	displayRefresh,
 	openGameBoard,
@@ -313,7 +337,7 @@ formInput.addEventListener('submit', (event) =>{
 	const inputData = new FormData(formInput);
 	console.log(inputData.get('player1Name'))
 	displayGame = createDisplay(inputData);
-	displayGame.closeInputBoard();
+	//displayGame.closeInputBoard();
 	displayGame.openGameBoard();
 });
 
